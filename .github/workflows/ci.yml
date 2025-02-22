@@ -1,0 +1,24 @@
+name: Java CI/CD
+
+on: [push, pull_request]  # push 또는 PR 발생 시 실행
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3  # 코드 가져오기
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+
+    - name: Compile Java Code
+      run: |
+        mkdir -p out
+        javac -d out $(find src -name "*.java")
+
+    - name: Run Tests
+      run: java -cp out:lib/junit-4.13.2.jar org.junit.runner.JUnitCore MyTests
